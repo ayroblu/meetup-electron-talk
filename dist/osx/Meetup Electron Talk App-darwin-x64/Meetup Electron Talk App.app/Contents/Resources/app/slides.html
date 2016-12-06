@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="revealjs/css/reveal.css">
+		<link rel="stylesheet" href="revealjs/css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="revealjs/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'revealjs/css/print/pdf.css' : 'revealjs/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body style="-webkit-app-region: drag">
+		<div class="reveal">
+			<div class="slides">
+				<section>
+          <h1>Electron Talk</h1>
+          <p>
+            <small>By <a href="https://github.com/ayroblu">Ben Lu - github.com/ayroblu</a></small>
+          </p>
+        </section>
+				<section>
+          <h2>What is electron?</h2>
+          <p>Lazy native</p>
+          <p>Chromium inside a native window</p>
+        </section>
+				<section>
+          <h2>Alternatives</h2>
+          <ul>
+            <li>React Native (frameworked native)</li>
+            <li>Node webkit (older, worse electron)</li>
+            <li>Java (ugly native)</li>
+            <li>Qt / native</li>
+          </ul>
+        </section>
+				<section>
+          <h2>Code</h2>
+          <ul>
+            <li>main.js</li>
+            <li>index.html + styles.css etc</li>
+            <li>package.json and whatever else</li>
+          </ul>
+        </section>
+				<section>
+          <h2>Code</h2>
+
+          <pre><code data-trim>
+import { app, BrowserWindow } from 'electron'
+
+let mainWindow = null
+
+app.on('window-all-closed', () => {
+  if (process.platform != 'darwin')
+    app.quit()
+})
+
+app.on('ready', () => {
+  mainWindow = new BrowserWindow({width: 1000, height: 800})
+  mainWindow.loadURL('file://' + __dirname + '/slides.html')
+  mainWindow.on('closed', () => {
+    mainWindow = null
+  })
+})
+          </code></pre>
+        </section>
+				<section>
+          <pre><code data-trim>
+&lt;script>
+  // install babel hooks in the renderer process
+  require('babel-register');
+  require('./scripts/main');
+  const moment = require('moment')
+  alert(moment().format())
+&lt;/script>
+          </code></pre>
+        </section>
+        <section>
+          <h2>What can I do with it?</h2>
+          <p><a href="https://github.com/electron/electron/tree/master/docs/api">Docs</a></p>
+          <p>Demo: C+S+H</p>
+        </section>
+        <section>
+          <h2>But performance?</h2>
+          <p>Emscripten + AsmJS + WebGL (OpenGL)</p>
+          <p><a href="http://beta.unity3d.com/jonas/DT2/">Demo - Dead Trigger</a></p>
+        </section>
+        <section>
+          <h2>Distribution</h2>
+          <p>Packager - portable apps</p>
+          <p>Builder - installer</p>
+        </section>
+        <section>
+          <h2>Conclusion</h2>
+          <p>Run chromium in native window</p>
+          <p>Replace finder, iTunes, db viewer or whatever else!</p>
+        </section>
+			</div>
+		</div>
+
+		<script src="revealjs/lib/js/head.min.js"></script>
+		<script src="revealjs/js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'revealjs/plugin/markdown/marked.js' },
+					{ src: 'revealjs/plugin/markdown/markdown.js' },
+					{ src: 'revealjs/plugin/notes/notes.js', async: true },
+					{ src: 'revealjs/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+    <script>
+      require('electron').ipcRenderer.on('ping', (event, message) => {
+        window.location.href = 'https://devdocs.io'
+      })
+    </script>
+	</body>
+</html>
+

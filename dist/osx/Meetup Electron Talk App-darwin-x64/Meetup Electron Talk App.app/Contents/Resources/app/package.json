@@ -1,0 +1,28 @@
+{
+  "name": "meetup-electron-talk",
+  "version": "0.1.0",
+  "main": "bootstrapper.js",
+  "repository": "ayroblu/meetup-electron-talk",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "clean": "rm -rf ./dist",
+    "clean:osx": "rm -rf ./dist/osx",
+    "clean:win": "rm -rf ./dist/win",
+    "pack": "npm run clean && npm run pack:osx && npm run pack:win",
+    "pack:osx": "npm run clean:osx && electron-packager . \"Meetup Electron Talk App\" --out=dist/osx --platform=darwin --arch=x64 --icon=assets/osx/logo.icns --ignore=dist --ignore=assets --ignore=builder.json --ignore=bower.json --ignore=README.md --ignore=.gitignore --ignore=preview.png",
+    "pack:win": "npm run clean:win && electron-packager . \"Meetup Electron Talk App\" --out=dist/win --platform=win32 --arch=ia32 --icon=assets/win/logo.ico --ignore=dist --ignore=assets --ignore=builder.json --ignore=bower.json --ignore=README.md --ignore=.gitignore --ignore=preview.png"
+  },
+  "dependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-register": "^6.3.13",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "electron-packager": "^7.6.0",
+    "electron-prebuilt": "^1.2.0"
+  },
+  "devDependencies": {
+    "electron": "^1.4.3"
+  }
+}
